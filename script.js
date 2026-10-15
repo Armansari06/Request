@@ -356,12 +356,13 @@ try {
         }
 
     } catch (error) {
-        console.error("Firebase submission failed:", error);
+    console.error("Firebase submission failed:", error);
 
-        alert(
-            "Sorry! Your date plan could not be saved. " +
-            "Please check your internet connection and try again. ❤️"
-        );
+    alert(
+        "Submission failed!\n" +
+        "Error code: " + (error.code || "Unknown") + "\n" +
+        "Details: " + (error.message || "No details available")
+    );
 
     } finally {
         submitButton.disabled = false;
