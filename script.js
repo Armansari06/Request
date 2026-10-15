@@ -272,6 +272,29 @@ dateForm.addEventListener("submit", async (event) => {
             message: message,
             submittedAt: serverTimestamp()
         });
+        // Telegram notification through Google Apps Script
+const notificationUrl = "https://script.google.com/macros/s/AKfycby5K3-LAuhCH1JPbINE4aaGuKqe9UC7X5mR48HVUUliBFTHkiSjc2ZVVbxjBI7k6UYY/exec";
+
+try {
+    fetch(notificationUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+            food: food,
+            place: place,
+            date: date,
+            time: time,
+            message: message
+        })
+    }).catch(error => {
+        console.error("Notification request failed:", error);
+    });
+} catch (error) {
+    console.error("Notification request failed:", error);
+}
 
         // Format the date for the confirmation page.
         const [year, month, day] = date.split("-").map(Number);
