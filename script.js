@@ -186,121 +186,161 @@ dateInput.min = [
 // DATE FORM SUBMISSION
 // ------------------------------
 
-dateForm.addEventListener("submit", (event) => {
+import {
+    database,
+    ref,
+    push,
+    set,
+    serverTimestamp,
+    auth,
+    signInAnonymously
+} from "./firebase.js";
+
+// ------------------------------
+// FIREBASE INITIALIZATION
+// ------------------------------
+
+let firebaseReady = null;
+
+async function initializeFirebase() {
+    if (firebaseReady) {
+        return firebaseReady;
+    }
+
+    firebaseReady = (async () => {
+        if (!auth.currentUser) {
+            await signInAnonymously(auth);
+        }
+    })();
+
+    try {
+        await firebaseReady;
+    } catch (error) {
+        firebaseReady = null;
+        throw error;
+    }
+}
+
+// ------------------------------
+// DATE FORM SUBMISSION
+// ------------------------------
+
+dateForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    const submitButton = dateForm.querySelector(
+        'button[type="submit"]'
+    );
+
+    if (submitButton.disabled) {
+        return;
+    }
 
     const food = document.getElementById("food").value;
     const place = document.getElementById("place").value;
     const date = dateInput.value;
     const time = document.getElementById("time").value;
 
-    const message =
-        document.getElementById("message").value.trim();
+    const message = document
+        .getElementById("message")
+        .value
+        .trim();
 
     if (!food || !place || !date || !time) {
         alert("Please fill in all required fields! ❤️");
         return;
     }
 
-    const [year, month, day] = date.split("-").map(Number);
+    submitButton.disabled = true;
+    submitButton.textContent = "Saving your date plan... 💗";
 
-    const formattedDate = new Date(
-        year,
-        month - 1,
-        day
-    ).toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
-
-    dateSummary.replaceChildren();
-
-    const details = [
-        ["🍕 Food", food],
-        ["📍 Place", place],
-        ["📅 Date", formattedDate],
-        ["🕒 Time", time],
-        [
-            "💌 Special request",
-            message || "Nothing extra — just good vibes! ❤️"
-        ]
-    ];
-
-    details.forEach(([label, value]) => {
-        const row = document.createElement("p");
-        const strong = document.createElement("strong");
-
-        strong.textContent = label + ": ";
-
-        row.appendChild(strong);
-        row.appendChild(document.createTextNode(value));
-
-        dateSummary.appendChild(row);
-    });
-
-    datePage.classList.add("hidden");
-    finalPage.classList.remove("hidden");
-    // Prepare date details for Instagram
-const instagramUsername = "arman_ansari06";
-
-const instagramMessage =
-`💖 We have a date plan!
-
-🍕 Food: ${food}
-📍 Place: ${place}
-📅 Date: ${formattedDate}
-🕒 Time: ${time}
-
-💌 Special request:
-${message || "Nothing extra ❤️"}
-
-Can't wait for our date! 🥹💕`;
-
-// Show confirmation page first
-datePage.classList.add("hidden");
-finalPage.classList.remove("hidden");
-
-// Add an Instagram button to the final page
-let instagramBtn = document.getElementById("instagramBtn");
-
-if (!instagramBtn) {
-    instagramBtn = document.createElement("button");
-    instagramBtn.id = "instagramBtn";
-    instagramBtn.textContent = "Send Our Date Plan 💌";
-    instagramBtn.className = "submit-btn";
-
-    instagramBtn.style.marginTop = "15px";
-
-    document.querySelector("#finalPage .card")
-        .appendChild(instagramBtn);
-}
-
-instagramBtn.onclick = async () => {
-    // Copy details so they can be pasted into Instagram
     try {
-        await navigator.clipboard.writeText(instagramMessage);
-        alert("Date details copied! Paste them into Instagram chat ❤️");
+        // Authenticate the public website visitor.
+        await initializeFirebase();
+
+        // Create a new database record.
+        const submissionRef = push(
+            ref(database, "dateSubmissions")
+        );
+
+        // Save the form data.
+        await set(submissionRef, {
+            food: food,
+            place: place,
+            date: date,
+            time: time,
+            message: message,
+            submittedAt: serverTimestamp()
+        });
+
+        // Format the date for the confirmation page.
+        const [year, month, day] = date.split("-").map(Number);
+
+        const formattedDate = new Date(
+            year,
+            month - 1,
+            day
+        ).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+        // Safely render the submitted details.
+        dateSummary.replaceChildren();
+
+        const details = [
+            ["🍕 Food", food],
+            ["📍 Place", place],
+            ["📅 Date", formattedDate],
+            ["🕒 Time", time],
+            [
+                "💌 Special request",
+                message || "Nothing extra — just good vibes! ❤️"
+            ]
+        ];
+
+        details.forEach(([label, value]) => {
+            const row = document.createElement("p");
+            const strong = document.createElement("strong");
+
+            strong.textContent = label + ": ";
+
+            row.appendChild(strong);
+            row.appendChild(
+                document.createTextNode(value)
+            );
+
+            dateSummary.appendChild(row);
+        });
+
+        // Show the final page only after Firebase confirms saving.
+        datePage.classList.add("hidden");
+        finalPage.classList.remove("hidden");
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createHeart, i * 100);
+        }
+
     } catch (error) {
-        alert("Please copy the date details shown on the confirmation page.");
-    }
+        console.error("Firebase submission failed:", error);
 
-    // Open your Instagram profile
-    window.open(
-        "https://www.instagram.com/" + instagramUsername + "/",
-        "_blank"
-    );
-};
+        alert(
+            "Sorry! Your date plan could not be saved. " +
+            "Please check your internet connection and try again. ❤️"
+        );
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    for (let i = 0; i < 15; i++) {
-        setTimeout(createHeart, i * 100);
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Let's Plan Our Date! 💖";
     }
 });
+
 
 
 // ------------------------------
