@@ -287,6 +287,7 @@ try {
             "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify({
+            name: visitorName,
             food: food,
             place: place,
             date: date,
