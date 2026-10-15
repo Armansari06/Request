@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>A Little Question For You ❤️</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="hearts" id="hearts"></div>
+
+    <!-- FIRST PAGE -->
+    <main class="container" id="proposalPage">
+
+        <div class="card">
+
+            <div class="emoji">💌</div>
+
+            <p class="small-text">I have something to ask you...</p>
+
+            <h1>Will you go on a date with me? ❤️</h1>
+
+            <p class="description">
+                Just you, me, some good food,
+                and a beautiful memory. 🥹
+            </p>
+
+            <div class="buttons">
+                <button id="yesBtn">YES! 💖</button>
+                <button id="noBtn">NO 🙈</button>
+            </div>
+
+            <p class="hint" id="hint">
+                Choose wisely... 👀💕
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- SECOND PAGE -->
+    <main class="container hidden" id="datePage">
+
+        <div class="card date-card">
+
+            <div class="emoji">🥹💗</div>
+
+            <h1>YAYYY! YOU SAID YES! 🎉</h1>
+
+            <p class="description">
+                You just made me the happiest person! ❤️
+                Now let's plan our little date.
+            </p>
+
+            <form id="dateForm">
+
+                <label for="food">🍕 What would you like to eat?</label>
+
+                <select id="food" name="food" required>
+                    <option value="">Choose your favourite...</option>
+                    <option>Pizza 🍕</option>
+                    <option>Burger 🍔</option>
+                    <option>Pasta 🍝</option>
+                    <option>Sushi 🍣</option>
+                    <option>Biryani 🍛</option>
+                    <option>Ice Cream Date 🍦</option>
+                    <option>Anything, surprise me! 🎁</option>
+                </select>
+
+
+                <label for="place">📍 Where should we go?</label>
+
+                <select id="place" name="place" required>
+                    <option value="">Pick our place...</option>
+                    <option>A cute cafe ☕</option>
+                    <option>A fancy restaurant 🍽️</option>
+                    <option>A beautiful park 🌳</option>
+                    <option>The beach 🌊</option>
+                    <option>Movies together 🎬</option>
+                    <option>Somewhere surprising ✨</option>
+                </select>
+
+
+                <label for="date">📅 Which date works for you?</label>
+
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                >
+
+
+                <label for="time">🕒 What time do you prefer?</label>
+
+                <select id="time" name="time" required>
+                    <option value="">Choose a time...</option>
+                    <option>Morning ☀️</option>
+                    <option>Afternoon 🌸</option>
+                    <option>Evening 🌅</option>
+                    <option>Night ✨</option>
+                </select>
+
+
+                <label for="message">
+                    💌 Anything else? (Optional)
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Your favourite place, special request, or anything you want to tell me... ❤️"
+                    rows="4"
+                ></textarea>
+
+
+                <button type="submit" class="submit-btn">
+                    Let's Plan Our Date! 💖
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- FINAL SURPRISE -->
+    <main class="container hidden" id="finalPage">
+
+        <div class="card">
+
+            <div class="emoji">💖🥂</div>
+
+            <h1>It's a Date! 🎉</h1>
+
+            <p class="description">
+                I can't wait to spend some beautiful
+                moments with you. 🥹❤️
+            </p>
+
+            <div id="dateSummary" class="summary"></div>
+
+            <p class="small-text">
+                Here's to our little adventure! 🌹
+            </p>
+
+            <button id="restartBtn">
+                Start Again 💕
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
