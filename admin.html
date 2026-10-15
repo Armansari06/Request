@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard 💖</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <div class="background-hearts">💗 💕 ❤️ 💖 💗</div>
+
+    <main class="admin-container">
+
+        <!-- LOGIN -->
+        <section class="card" id="loginSection">
+
+            <div class="emoji">🔐</div>
+
+            <h1>Welcome, Admin!</h1>
+
+            <p class="subtitle">
+                Login to view your date submissions 💌
+            </p>
+
+            <form id="loginForm">
+
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your admin email"
+                    required
+                >
+
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit" id="loginBtn">
+                    Login to Dashboard 💖
+                </button>
+
+                <p id="loginError" class="error"></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- DASHBOARD -->
+        <section class="dashboard hidden" id="dashboardSection">
+
+            <header class="dashboard-header">
+
+                <div>
+                    <h1>💖 Admin Dashboard</h1>
+                    <p>Manage your date submissions</p>
+                </div>
+
+                <button id="logoutBtn" class="logout-btn">
+                    Logout 🚪
+                </button>
+
+            </header>
+
+            <div class="stats-card">
+                <span class="stats-icon">💌</span>
+
+                <div>
+                    <p>Total Submissions</p>
+                    <h2 id="totalCount">0</h2>
+                </div>
+            </div>
+
+            <div class="list-header">
+                <h2>All Submissions</h2>
+
+                <button id="refreshBtn" class="refresh-btn">
+                    Refresh 🔄
+                </button>
+            </div>
+
+            <p id="statusMessage" class="status"></p>
+
+            <div id="submissionsList" class="submissions-list"></div>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="admin.js"></script>
+
+</body>
+</html>
