@@ -236,6 +236,8 @@ dateForm.addEventListener("submit", async (event) => {
         return;
     }
 
+    const visitorName = document.getElementById("visitorName").value.trim();
+
     const food = document.getElementById("food").value;
     const place = document.getElementById("place").value;
     const date = dateInput.value;
@@ -246,7 +248,8 @@ dateForm.addEventListener("submit", async (event) => {
         .value
         .trim();
 
-    if (!food || !place || !date || !time) {
+    if (!visitorName || !food || !place || !date || !time) {
+
         alert("Please fill in all required fields! ❤️");
         return;
     }
@@ -265,6 +268,7 @@ dateForm.addEventListener("submit", async (event) => {
 
         // Save the form data.
         await set(submissionRef, {
+            name: visitorName,
             food: food,
             place: place,
             date: date,
